@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Json to form</title>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Roboto';
+            }
+            body { background-color: #fafafa; }
+            h3 {
+                margin-top: 0;
+            }
+            small {
+                color: gray;
+                font-size: 0.8em;
+            }
+            #container {
+                float: left;
+                width: 300px;
+                padding: 16px;
+                height: 100vh;
+                overflow-y: scroll;
+                box-sizing: border-box;
+                border-right: 1px solid rgba(0,0,0,0.08);
+            }
+            #control-area {
+                float: left;
+                width: 300px;
+                padding: 16px;
+            }
+            #output {
+                font-family: monospace;
+                font-size: 1.1em;
+            }
+        </style>
+
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+        <script src="input-values.jquery.js"></script>
+        <script type="text/javascript">
+            window.refreshJsonArea = function () {};
+            window.refreshFormArea = function () {}
+
+            $(function () {
+                var $container = $('#container'),
+                    $output = $('#output'),
+                    $includeDisabled = $('#include-disabled'),
+                    $attrName = $('#control-area [name="attrName"]');
+
+
+                //enabling console access for refresh functions
+                window.refreshJsonArea = function () {
+                    var content = JSON.stringify($container.inputValues());
+                    $output.val(
+                        content.replace(/[,]/g, ',\n')
+                    );
+                };
+
+                window.refreshFormArea = function () {
+                    var json;
+
+                    try {
+                        json = JSON.parse($output.val());
+                    } catch (e) {
+                        alert('invalid json');
+                        return;
+                    }
+
+                    $container.inputValues(json);
+                };
+
+
+                //biding events
+                $container.on('change', window.refreshJsonArea);
+
+                $output.on('change', window.refreshFormArea);
+
+                $includeDisabled.on('change', function (e) {
+                    $().inputValues.config({
+                        includeDisabled: $(e.target).is(':checked')
+                    });
+
+                    window.refreshJsonArea();
+                });
+
+                $includeDisabled.on('change', function (e) {
+                    $().inputValues.config({
+                        includeDisabled: $(e.target).is(':checked')
+                    });
+
+                    window.refreshJsonArea();
+                });
+
+                $attrName.on('change', function () {
+                    var value = $('[name="attrName"]:checked').val();
+                    console.log(value);
+                    $().inputValues.config({
+                        attr: value
+                    });
+
+                    window.refreshJsonArea();
+                });
+
+                //booting
+                window.refreshJsonArea();
+            });
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <h1>Grootan Test</h1>
+            <h2>Round 2</h2>
+            <label>Name</label><br>
+            <input type="text"
+                id="textInputId"
+                name="textInput"><br>
+            <br>
+
+            <label>Age</label><br>
+             <input type="text"
+                id="textInputId"
+                name="textInput"><br>
+            <br>
+            <br>
+
+              <label>Country</label><br>
+            <select name="select" id="selectId">
+                <option></option>
+                <option value="India">&nbsp;&nbsp;&nbsp;&nbsp;India</option>
+                <option value="Australia">&nbsp;&nbsp;&nbsp;&nbsp;Australia</option>
+                <option value="Kenya">&nbsp;&nbsp;&nbsp;&nbsp;Kenya</option>
+            </select>
+            <br>
+            <br>
+
+            <label>DOB</label><br>
+            <input type="date"
+                id="dateInputId"
+                name="dateInput">
+            <br><br>
+
+            <label>Gender</label><br>
+            <label><input type="radio" name="radio" id="radioId1" value="Male">Male<label>
+            <label><input type="radio" name="radio" id="radioId2" value="Female">Female<label>
+            <br>
+            <br>
+
+
+            <label>Languages Known</label><br>
+            <select multiple="multiple" name="selectMultiple" id="selectMultipleId">
+                <option value="Java">&nbsp;&nbsp;&nbsp;&nbsp;Java</option>
+                <option value="Ruby">&nbsp;&nbsp;&nbsp;&nbsp;Ruby</option>
+                <option value="Python">&nbsp;&nbsp;&nbsp;&nbsp;Python</option>
+            </select>
+            <br>
+            <br>
+
+            <label>Favourite Color <small>(no id)</small></label><br>
+            <input type="color" name="colorInput">
+            <br>
+            <br>
+
+             <label>Upload photograph</label><br>
+            <input type="file" name="file">
+            <br>
+            <br>
+
+             <label>Email</label><br>
+            <input type="text"
+                id="textInputId"
+                name="textInput"><br>
+            <br>
+
+            <label>Start Time <small>(no id)</small></label><br>
+            <input type="time" name="timeInput">
+            <br><br>
+
+            <label>Website Address</label><br>
+            <textarea id="textAreaId" name="textarea"></textarea>
+            <br>
+            <br>
+
+
+            <label>CGPA <small>(no id)</small></label><br>
+            <input type="range" name="rangeInput">
+            <br><br>
+
+
+       
+        </div>
+
+        <div id="control-area">
+            <div class="jquery-script-ads" style="margin:20px auto;"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+            <textarea rows="20" cols="40" id="output"></textarea>
+        </div>
+    </body>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</html>
